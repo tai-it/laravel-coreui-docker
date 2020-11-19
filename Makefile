@@ -17,6 +17,5 @@ app-setup:
 	yarn -i
 
 app-start:
-	yarn run dev -- --watch
-	php artisan serve --host=127.0.0.1 --port=8001
-	EXPOSE 8001
+	yarn run dev --watch
+	php artisan serve
