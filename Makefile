@@ -1,11 +1,22 @@
+init:
+	docker-compose up -d
+
 setup:
+	docker exec -it bizcard make app-setup
+	docker exec -it bizcard chmod -R 777 storage bootstrap/cache
+
+start:
+	docker exec -it bizcard make app-start
+
+app-setup:
 	cp .env.example .env
-	composer install
+	composer update --ignore-platform-reqs
 	php artisan key:generate
 	php artisan migrate:refresh --seed
 	rm -rf node_modules
 	yarn -i
-	
-start:
-	yarn run dev
-	php artisan serve
+
+app-start:
+	yarn run dev -- --watch
+	php artisan serve --host=127.0.0.1 --port=8001
+	EXPOSE 8001
