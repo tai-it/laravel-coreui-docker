@@ -2,33 +2,36 @@ version: '3.6'
 
 services:
   admin:
-    container_name: bizcard
-    build: ./
-    ports:
-      - "8014:80"
+    container_name: bizcard_admin
+    build: ./docker
     restart: always
     volumes:
       - .:/var/www/bizcard
-      
-  mysql:
+    ports:
+      - "8014:80"
+    depends_on:
+      - db
+    networks:
+      - bizcard
+    links: 
+      - db
+
+  db:
+    container_name: bizcard_db
     image: mysql
     restart: always
     volumes:
       - /var/lib/mysql
     ports:
-      - 3360:3306
+      - "3306:3306"
     environment:
       MYSQL_DATABASE: bizcard
       MYSQL_USER: root
       MYSQL_PASSWORD: Asdfgh123456
       MYSQL_ROOT_PASSWORD: Asdfgh123456
+    networks:
+      - bizcard
 
-  phpmyadmin:
-    image: phpmyadmin
-    environment:
-      - PMA_ARBITRARY=1
-    restart: always
-    ports:
-      - 8080:80
-    volumes:
-      - /sessions
+networks:
+  bizcard:
+    driver: bridge

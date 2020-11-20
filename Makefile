@@ -2,11 +2,11 @@ init:
 	docker-compose up -d
 
 setup:
-	docker exec -it bizcard make app-setup
-	docker exec -it bizcard chmod -R 777 storage bootstrap/cache
+	docker exec -it bizcard_admin make app-setup
+	docker exec -it bizcard_admin chmod -R 777 storage bootstrap/cache
 
 start:
-	docker exec -it bizcard make app-start
+	docker exec -it bizcard_admin make app-start
 
 app-setup:
 	cp .env.example .env
@@ -18,4 +18,3 @@ app-setup:
 
 app-start:
 	yarn run dev --watch
-	php artisan serve
